@@ -59,21 +59,20 @@ class Fullscreen_Window:
         #self.flip_a_coin()
         
         # "show clock" or "hide clock" 
-        #self.toggle_clock()
+        self.toggle_clock()
         
         # "show date" or "hide date"
-        #self.toggle_date()
+        self.toggle_date()
         
-        
-        # TODO        
-        # "what's in the news today" => displays the news
-        # "hide news" => hides the news
-        
-        # "play X" ???
-        
+        # TODO
         # "what's the weather like" => displays weather
         # "hide weather" => hides the weather
         
+        # "what's in the news today" => displays the news
+        # "hide news" => hides the news
+        
+        # "play ..." open chrome in background and display "Playing video_name"
+        # "stop playing" close chrome and hide "Playing video_name"
         
     def toggle_cover(self):
         color = "black" if self.hide_cover else "white"
