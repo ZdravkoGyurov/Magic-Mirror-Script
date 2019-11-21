@@ -36,18 +36,22 @@ def run():
         wind_speed = str(x["wind"]["speed"]) # in m/s
         
         cloudiness = str(x["clouds"]["all"]) # cloudiness in %
-        sunrise_time = str(time.ctime(x["sys"]["sunrise"]))
-        sunset_time = str(time.ctime(x["sys"]["sunset"]))
+        sunrise_time = str(datetime.fromtimestamp(x["sys"]["sunrise"]).strftime('%H:%M:%S'))
+        sunset_time = str(datetime.fromtimestamp(x["sys"]["sunset"]).strftime('%H:%M:%S'))
 
-        print(country_code + " " + city + "(" + latitude + ", " + longitude + ")")
-        print("Temperature: " + current_temperature + "°C Min: " + min_temperature + "°C Max: " + max_temperature + "°C")
-        print(weather_description + " Wind: " + wind_speed + "m/s Cloudiness: " + cloudiness + "% Humidity: " + humidity + "% Pressure: " + pressure + "hpa")
-        print("Sunrise: " + sunrise_time)
-        print("Sunset: " + sunset_time)
+        file = open("weather_report.txt", "w+")
 
-#        while 1:  
-#            print("Clock: " + datetime.now().strftime('%d-%m-%Y %H:%M:%S'), end='\r')
-#            time.sleep(1)
-
+#        file.write(city + "(" + latitude + ", " + longitude + ")\n")
+        file.write(city + "\n")
+        file.write(weather_description + "\n")
+#        file.write(current_temperature + "°C min: " + min_temperature + "°C max: " + max_temperature + "°C\n")
+        file.write(current_temperature + "°C\n")
+        file.write("wind: " + wind_speed + "m/s\n")
+        file.write("cloudiness: " + cloudiness + "%\n")
+        file.write("humidity: " + humidity + "%\n")
+        file.write("sunrise: " + sunrise_time + "\n")
+        file.write("sunset: " + sunset_time + "\n")
+	
+        file.close()
     else:
       print("Couldn't get data")

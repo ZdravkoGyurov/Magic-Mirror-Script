@@ -8,7 +8,20 @@ def get_news():
   html = response.read()
   soup = BeautifulSoup(html, 'html.parser')
   
+  file = open("news_report.txt", "w+")
+  
   i = 1
+  max_article_text = 50
+  max_articles = 15
   for article in soup.select('h3 > a'):
-    print(str(i) + ". " + article.text)
+    if i > max_articles:
+        break
+    if(len(article.text) > max_article_text):
+        file.write(str(i) + ". " + article.text[0:max_article_text] + "...\n")
+    else:
+        file.write(str(i) + '. ' + article.text + "\n")
     i += 1
+    
+  file.close()
+
+get_news()

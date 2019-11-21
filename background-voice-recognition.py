@@ -6,6 +6,7 @@ import speech_recognition as sr
 from random import randint
 from datetime import datetime
 import os
+import gui
 
 listen = True
 
@@ -14,46 +15,51 @@ def stop_listening():
 
 def callback(recognizer, audio):
   try:
-    command = recognizer.recognize_google(audio)
+    command = recognizer.recognize_google(audio).lower()
+    print(command)
 
     global listen
     
-    if(command == "what's in the news today" and listen == True):
-      google_util.get_news()
+    if(command == "mirror news" and listen == True):
+      w.toggle_news()
       return
+  
+    if((command == "mirror wake up" or command == "mirror sleep") and listen == True):
+        w.toggle_cover()
+        return
 
     if(command.split(" ", 1)[0] == "play" and listen == True):
       youtube_util.play_video(command.split(" ", 1)[1])
       return
 
-    if(command == "what's the time" and listen == True):
-      print(datetime.now().strftime('%H:%M:%S'))
+    if(command == "mirror flip a coin" and listen == True):
+      w.flip_a_coin()
+      return
+  
+    if(command == "mirror clock" and listen == True):
+      w.toggle_clock()
       return
 
-    if(command == "what date is it" and listen == True):
-      print(datetime.now().strftime('%d-%m-%Y'))
+    if(command == "mirror date" and listen == True):
+      w.toggle_date()
       return
 
-    if(command == "flip a coin" and listen == True):
-      print("Heads" if randint(0, 1) == 0 else "Tails")
+    if(command == "mirror weather" and listen == True):
+      w.toggle_weather()
       return
 
-    if(command == "what's the weather like" and listen == True):
-      weather.run()
-      return
-
-    if(command == "mirror wake up" and listen == False):
+    if(command == "mirror start listening" and listen == False):
       listen = True
+      w.toggle_mute()
       print("Started listening...")
       return
 
-    if(command == "mirror sleep" and listen == True):
+    if(command == "mirror stop listening" and listen == True):
       listen = False
+      w.toggle_mute()
       print("Stopped listening")
       return
-
-#    if listen == True:
-#      print(command)
+  
   except sr.UnknownValueError:
     return
   except sr.RequestError as e:
@@ -61,7 +67,7 @@ def callback(recognizer, audio):
 
 r = sr.Recognizer()
 m = sr.Microphone()
-os.system('clear')
+#os.system('clear')
 
 with m as source:
   r.adjust_for_ambient_noise(source)
@@ -69,6 +75,9 @@ with m as source:
 listening = r.listen_in_background(m, callback)
 
 # do some stuff
+#if __name__ == '__main__':
+w = gui.Fullscreen_Window()
+w.tk.mainloop()
 while True: time.sleep(0.1)
 
 # stop listening
